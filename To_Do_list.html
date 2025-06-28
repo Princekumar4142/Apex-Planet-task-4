@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Workspace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base styles for a clean, modern look */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* More vibrant, but soft, blue-purple gradient */
+            background: linear-gradient(to right bottom, #c0e0fd, #d7e7fe, #e1e9ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top for better content display */
+            padding: 2.5rem 1.5rem; /* Increased padding for better mobile spacing */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 1.75rem; /* Even more rounded corners */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+            width: 100%;
+            max-width: 850px; /* Slightly wider container */
+            padding: 3rem; /* More generous padding */
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem; /* Increased gap between sections */
+            animation: fadeInScale 0.7s ease-out forwards; /* Subtle entry animation */
+            opacity: 0; /* Start invisible for animation */
+            transform: scale(0.95); /* Start slightly smaller for animation */
+        }
+
+        /* Animation for container entry */
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Input fields and textareas with enhanced focus states */
+        input[type="text"], textarea {
+            border-radius: 0.8rem; /* Consistent rounded inputs */
+            border: 1px solid #e2e8f0; /* Light gray border */
+            padding: 0.85rem 1.1rem; /* Slightly more padding */
+            width: 100%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+            font-size: 1rem; /* Clearer font size */
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6; /* Deeper blue on focus */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* More pronounced shadow on focus */
+        }
+
+        /* General button styles */
+        .btn {
+            padding: 0.9rem 1.8rem; /* More prominent buttons */
+            border-radius: 0.8rem;
+            font-weight: 700; /* Bolder text */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transitions for hover */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+        }
+        .btn:hover {
+            transform: translateY(-3px); /* More noticeable lift on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+        }
+
+        /* Specific button colors */
+        .btn-primary {
+            background: linear-gradient(to right, #3b82f6, #2563eb); /* Blue gradient */
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2563eb, #1e40af); /* Darker blue on hover */
+        }
+        .btn-secondary {
+            background-color: #e9eff6; /* Lighter gray for secondary */
+            color: #4a5568;
+            border: 1px solid #d1d9e6; /* Add a light border */
+        }
+        .btn-secondary:hover {
+            background-color: #dbe4ef;
+            color: #2d3748;
+        }
+        .btn-success {
+            background: linear-gradient(to right, #22c55e, #16a34a); /* Green gradient */
+            color: white;
+        }
+        .btn-success:hover {
+            background: linear-gradient(to right, #16a34a, #0b803a);
+        }
+        .btn-danger {
+            background: linear-gradient(to right, #ef4444, #dc2626); /* Red gradient */
+            color: white;
+        }
+        .btn-danger:hover {
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+        }
+
+        /* Tab button styling */
+        .tab-button {
+            padding: 0.8rem 1.6rem;
+            border-radius: 9999px; /* Pill shape */
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            color: #6b7280; /* Default tab text color */
+        }
+        .tab-button.active {
+            background: linear-gradient(to right, #60a5fa, #3b82f6); /* Active tab blue gradient */
+            color: white;
+            box-shadow: 0 6px 15px rgba(96, 165, 250, 0.4); /* Stronger shadow for active tab */
+        }
+        .tab-button:not(.active):hover {
+            background-color: #f0f4f8; /* Softer hover for inactive tab */
+            color: #374151; /* Darker text on hover */
+        }
+
+        /* Task and Note item styling */
+        .task-item, .note-item {
+            background-color: #fcfdfe; /* Even lighter background for items */
+            border-radius: 1rem; /* More rounded item corners */
+            padding: 1.25rem 1.5rem; /* More internal padding */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem; /* Slightly increased margin */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* More noticeable item shadow */
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Hover transition */
+            border: 1px solid #e0e7ee; /* Subtle border for items */
+        }
+        .task-item:hover, .note-item:hover {
+            transform: translateY(-2px); /* Lift on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Stronger shadow on hover */
+        }
+        .task-item.completed {
+            background-color: #e0faed; /* Softer green for completed tasks */
+            text-decoration: line-through;
+            color: #8da4b6; /* Lighter, subtle grey for completed text */
+            opacity: 0.8;
+            border-color: #bbf7d0; /* Lighter green border */
+        }
+        .task-item.completed:hover {
+            transform: none; /* No lift for completed items */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Maintain initial shadow */
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0; /* More padding */
+            color: #aebecd; /* Softer grey for empty state text */
+            font-style: italic;
+        }
+        .empty-state i {
+            font-size: 3.5rem; /* Larger icon */
+            margin-bottom: 1.5rem; /* More space below icon */
+            color: #c9d7e3; /* Lighter icon color */
+            animation: bounceIn 0.8s ease-out; /* Bounce animation for icon */
+        }
+
+        /* Bounce animation */
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            80% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                border-radius: 1.25rem;
+            }
+            .btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+            }
+            .tab-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .task-item, .note-item {
+                flex-direction: column; /* Stack elements on smaller screens */
+                align-items: flex-start;
+                padding: 1rem 1.25rem;
+            }
+            .task-item div:first-child { /* Checkbox and text */
+                width: 100%;
+                margin-bottom: 0.75rem;
+            }
+            .delete-task-btn, .delete-note-btn {
+                align-self: flex-end; /* Align delete button to bottom right */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">My Digital Workspace</h1>
+        <p class="text-center text-gray-500 text-lg mb-8">Organize your thoughts and tasks in one beautiful place</p>
+
+        <!-- Tab Navigation -->
+        <div class="flex justify-center items-center gap-5 bg-gray-100 p-2.5 rounded-full mb-8 shadow-inner">
+            <button id="notesTab" class="tab-button active">
+                <i class="fas fa-book mr-2"></i>Notes (<span id="notesCount">0</span>)
+            </button>
+            <button id="tasksTab" class="tab-button">
+                <i class="fas fa-tasks mr-2"></i>Tasks (<span id="tasksCount">0</span>)
+            </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative mb-8">
+            <input type="text" id="searchBar" placeholder="Search notes or tasks..." class="pl-11 pr-4 text-base">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+
+        <!-- Task Section -->
+        <div id="taskSection" class="hidden">
+            <!-- Add Task Input -->
+            <div class="flex flex-col md:flex-row gap-4 mb-8">
+                <input type="text" id="newTaskInput" placeholder="Add a new task..." class="flex-grow">
+                <button id="addTaskBtn" class="btn btn-primary flex-shrink-0">
+                    <i class="fas fa-plus mr-2"></i>Add Task
+                </button>
+            </div>
+
+            <!-- Task Filters/Counts -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div id="totalTasksBtn" class="btn btn-primary text-center">
+                    <span id="totalTasksDisplay" class="text-2xl font-extrabold">0</span><br>Total Tasks
+                </div>
+                <div id="completedTasksBtn" class="btn btn-success text-center">
+                    <span id="completedTasksDisplay" class="text-2xl font-extrabold">0</span><br>Completed
+                </div>
+                <div id="pendingTasksBtn" class="btn btn-danger text-center">
+                    <span id="pendingTasksDisplay" class="text-2xl font-extrabold">0</span><br>Pending
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div id="taskList" class="flex flex-col gap-3">
+                <!-- Tasks will be dynamically loaded here -->
+            </div>
+            <div id="emptyTaskState" class="empty-state">
+                <i class="fas fa-check-square"></i>
+                <p class="text-lg">No tasks yet. Add your first task!</p>
+            </div>
+        </div>
+
+        <!-- Note Section -->
+        <div id="noteSection">
+            <!-- Create New Note -->
+            <div class="bg-blue-50 p-7 rounded-2xl shadow-lg border border-blue-100 mb-8">
+                <h3 class="text-2xl font-semibold text-gray-700 mb-5">Create New Note</h3>
+                <input type="text" id="noteTitleInput" placeholder="Note title..." class="mb-4 text-base">
+                <input type="text" id="noteCategoryInput" placeholder="Category (optional)..." class="mb-4 text-base">
+                <textarea id="noteContentInput" placeholder="Write your note content here..." rows="6" class="text-base"></textarea>
+                <button id="addNoteBtn" class="btn btn-primary mt-5 w-full">
+                    <i class="fas fa-plus mr-2"></i>Add Note
+                </button>
+            </div>
+
+            <!-- Note List -->
+            <div id="noteList" class="flex flex-col gap-3">
+                <!-- Notes will be dynamically loaded here -->
+            </div>
+            <div id="emptyNoteState" class="empty-state">
+                <i class="fas fa-clipboard"></i>
+                <p class="text-lg">No notes yet. Create your first note!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const notesTab = document.getElementById('notesTab');
+        const tasksTab = document.getElementById('tasksTab');
+        const notesCountSpan = document.getElementById('notesCount');
+        const tasksCountSpan = document.getElementById('tasksCount');
+        const searchBar = document.getElementById('searchBar');
+
+        const taskSection = document.getElementById('taskSection');
+        const newTaskInput = document.getElementById('newTaskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const emptyTaskState = document.getElementById('emptyTaskState');
+
+        const totalTasksBtn = document.getElementById('totalTasksBtn');
+        const completedTasksBtn = document.getElementById('completedTasksBtn');
+        const pendingTasksBtn = document.getElementById('pendingTasksBtn');
+        const totalTasksDisplay = document.getElementById('totalTasksDisplay');
+        const completedTasksDisplay = document.getElementById('completedTasksDisplay');
+        const pendingTasksDisplay = document.getElementById('pendingTasksDisplay');
+
+        const noteSection = document.getElementById('noteSection');
+        const noteTitleInput = document.getElementById('noteTitleInput');
+        const noteCategoryInput = document.getElementById('noteCategoryInput');
+        const noteContentInput = document.getElementById('noteContentInput');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        const noteList = document.getElementById('noteList');
+        const emptyNoteState = document.getElementById('emptyNoteState');
+
+        // Data arrays
+        let tasks = [];
+        let notes = [];
+        let currentView = 'notes'; // 'notes' or 'tasks'
+        let currentTaskFilter = 'all'; // 'all', 'completed', 'pending'
+
+        // --- Utility Functions ---
+
+        /**
+         * Generates a unique ID for tasks/notes.
+         * @returns {string} A unique ID.
+         */
+        const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+        /**
+         * Saves data to local storage.
+         * @param {string} key - The key for local storage.
+         * @param {Array} data - The data array to save.
+         */
+        const saveData = (key, data) => {
+            localStorage.setItem(key, JSON.stringify(data));
+        };
+
+        /**
+         * Loads data from local storage.
+         * @param {string} key - The key for local storage.
+         * @returns {Array} The loaded data array, or an empty array if not found.
+         */
+        const loadData = (key) => {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        };
+
+        /**
+         * Updates the counts displayed on the tabs and filter buttons.
+         */
+        const updateCounts = () => {
+            notesCountSpan.textContent = notes.length;
+            tasksCountSpan.textContent = tasks.length;
+
+            totalTasksDisplay.textContent = tasks.length;
+            completedTasksDisplay.textContent = tasks.filter(task => task.completed).length;
+            pendingTasksDisplay.textContent = tasks.filter(task => !task.completed).length;
+        };
+
+        /**
+         * Shows or hides the empty state message based on item count.
+         * @param {HTMLElement} element - The empty state element.
+         * @param {Array} items - The array of items.
+         */
+        const toggleEmptyState = (element, items) => {
+            element.classList.toggle('hidden', items.length > 0);
+        };
+
+        // --- Task Functions ---
+
+        /**
+         * Renders a single task item to the DOM.
+         * @param {Object} task - The task object.
+         */
+        const renderTask = (task) => {
+            const taskItem = document.createElement('div');
+            taskItem.classList.add('task-item', 'relative', 'overflow-hidden');
+            if (task.completed) {
+                taskItem.classList.add('completed');
+            }
+            taskItem.dataset.id = task.id;
+
+            taskItem.innerHTML = `
+                <div class="flex items-center flex-grow">
+                    <input type="checkbox" class="mr-3 w-5 h-5 rounded-md cursor-pointer accent-blue-500" ${task.completed ? 'checked' : ''}>
+                    <span class="text-gray-800 text-lg flex-grow break-all pr-4">${task.text}</span>
+                </div>
+                <button class="delete-task-btn bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors duration-200">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+            const checkbox = taskItem.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', () => toggleTaskCompleted(task.id));
+
+            const deleteButton = taskItem.querySelector('.delete-task-btn');
+            deleteButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent checkbox from being toggled if delete button is clicked
+                deleteTask(task.id);
+            });
+
+            taskList.appendChild(taskItem);
+        };
+
+        /**
+         * Adds a new task.
+         */
+        const addTask = () => {
+            const text = newTaskInput.value.trim();
+            if (text) {
+                const newTask = {
+                    id: generateId(),
+                    text: text,
+                    completed: false
+                };
+                tasks.push(newTask);
+                saveData('tasks', tasks);
+                newTaskInput.value = '';
+                renderTasks();
+                updateCounts();
+            }
+        };
+
+        /**
+         * Toggles the completion status of a task.
+         * @param {string} id - The ID of the task to toggle.
+         */
+        const toggleTaskCompleted = (id) => {
+            tasks = tasks.map(task =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            );
+            saveData('tasks', tasks);
+            renderTasks();
+            updateCounts();
+        };
+
+        /**
+         * Deletes a task.
+         * @param {string} id - The ID of the task to delete.
+         */
+        const deleteTask = (id) => {
+            tasks = tasks.filter(task => task.id !== id);
+            saveData('tasks', tasks);
+            renderTasks();
+            updateCounts();
+        };
+
+        /**
+         * Renders all tasks based on the current filter and search query.
+         */
+        const renderTasks = () => {
+            taskList.innerHTML = ''; // Clear existing tasks
+            let filteredTasks = tasks;
+
+            // Apply filter
+            if (currentTaskFilter === 'completed') {
+                filteredTasks = tasks.filter(task => task.completed);
+            } else if (currentTaskFilter === 'pending') {
+                filteredTasks = tasks.filter(task => !task.completed);
+            }
+
+            // Apply search filter if search bar is active and not empty
+            const searchQuery = searchBar.value.toLowerCase();
+            if (searchQuery && currentView === 'tasks') {
+                filteredTasks = filteredTasks.filter(task =>
+                    task.text.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            filteredTasks.forEach(renderTask);
+            toggleEmptyState(emptyTaskState, filteredTasks);
+        };
+
+        // --- Note Functions ---
+
+        /**
+         * Renders a single note item to the DOM.
+         * @param {Object} note - The note object.
+         */
+        const renderNote = (note) => {
+            const noteItem = document.createElement('div');
+            noteItem.classList.add('note-item', 'flex-col', 'items-start');
+            noteItem.dataset.id = note.id;
+
+            noteItem.innerHTML = `
+                <div class="w-full flex justify-between items-start mb-2">
+                    <h4 class="text-xl font-semibold text-gray-800 break-all pr-4">${note.title}</h4>
+                    <button class="delete-note-btn bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors duration-200">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                ${note.category ? `<p class="text-sm text-gray-600 mb-2 px-3 py-1 bg-blue-200 rounded-full inline-block font-medium">${note.category}</p>` : ''}
+                <p class="text-gray-700 text-base break-words mt-2">${note.content}</p>
+            `;
+
+            const deleteButton = noteItem.querySelector('.delete-note-btn');
+            deleteButton.addEventListener('click', () => deleteNote(note.id));
+
+            noteList.appendChild(noteItem);
+        };
+
+        /**
+         * Adds a new note.
+         */
+        const addNote = () => {
+            const title = noteTitleInput.value.trim();
+            const category = noteCategoryInput.value.trim();
+            const content = noteContentInput.value.trim();
+
+            if (title && content) {
+                const newNote = {
+                    id: generateId(),
+                    title: title,
+                    category: category,
+                    content: content
+                };
+                notes.push(newNote);
+                saveData('notes', notes);
+                noteTitleInput.value = '';
+                noteCategoryInput.value = '';
+                noteContentInput.value = '';
+                renderNotes();
+                updateCounts();
+            } else {
+                // In a real app, you might show a custom modal message here instead of console.warn
+                console.warn('Note title and content cannot be empty.');
+            }
+        };
+
+        /**
+         * Deletes a note.
+         * @param {string} id - The ID of the note to delete.
+         */
+        const deleteNote = (id) => {
+            notes = notes.filter(note => note.id !== id);
+            saveData('notes', notes);
+            renderNotes();
+            updateCounts();
+        };
+
+        /**
+         * Renders all notes based on the search query.
+         */
+        const renderNotes = () => {
+            noteList.innerHTML = ''; // Clear existing notes
+
+            // Apply search filter if search bar is active and not empty
+            const searchQuery = searchBar.value.toLowerCase();
+            let filteredNotes = notes;
+            if (searchQuery && currentView === 'notes') {
+                filteredNotes = notes.filter(note =>
+                    note.title.toLowerCase().includes(searchQuery) ||
+                    note.content.toLowerCase().includes(searchQuery) ||
+                    (note.category && note.category.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            filteredNotes.forEach(renderNote);
+            toggleEmptyState(emptyNoteState, filteredNotes);
+        };
+
+        // --- View Management ---
+
+        /**
+         * Switches between 'notes' and 'tasks' view.
+         * @param {string} view - 'notes' or 'tasks'.
+         */
+        const switchView = (view) => {
+            currentView = view;
+
+            // Update tab styles
+            notesTab.classList.toggle('active', view === 'notes');
+            tasksTab.classList.toggle('active', view === 'tasks');
+
+            // Toggle section visibility
+            noteSection.classList.toggle('hidden', view === 'tasks');
+            taskSection.classList.toggle('hidden', view === 'notes');
+
+            // Render content for the active view
+            if (view === 'notes') {
+                renderNotes();
+                searchBar.placeholder = 'Search notes...';
+            } else {
+                renderTasks();
+                searchBar.placeholder = 'Search tasks...';
+            }
+            // Clear search bar on view switch to avoid unexpected filtering
+            searchBar.value = '';
+        };
+
+        /**
+         * Sets the active task filter button style.
+         * @param {HTMLElement} activeBtn - The button to mark as active.
+         */
+        const setActiveFilterButton = (activeBtn) => {
+            [totalTasksBtn, completedTasksBtn, pendingTasksBtn].forEach(btn => {
+                // Reset to secondary/default style for non-active buttons
+                btn.classList.remove('btn-primary', 'btn-success', 'btn-danger');
+                btn.classList.add('btn-secondary');
+                btn.querySelector('span').classList.remove('text-white');
+            });
+
+            // Apply active styles
+            if (activeBtn === totalTasksBtn) activeBtn.classList.replace('btn-secondary', 'btn-primary');
+            else if (activeBtn === completedTasksBtn) activeBtn.classList.replace('btn-secondary', 'btn-success');
+            else if (activeBtn === pendingTasksBtn) activeBtn.classList.replace('btn-secondary', 'btn-danger');
+
+            activeBtn.querySelector('span').classList.add('text-white'); // Ensure text color is white for active
+        };
+
+
+        // --- Event Listeners ---
+
+        // Tab switching
+        notesTab.addEventListener('click', () => switchView('notes'));
+        tasksTab.addEventListener('click', () => switchView('tasks'));
+
+        // Add Task
+        addTaskBtn.addEventListener('click', addTask);
+        newTaskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Task Filters
+        totalTasksBtn.addEventListener('click', () => {
+            currentTaskFilter = 'all';
+            setActiveFilterButton(totalTasksBtn);
+            renderTasks();
+        });
+        completedTasksBtn.addEventListener('click', () => {
+            currentTaskFilter = 'completed';
+            setActiveFilterButton(completedTasksBtn);
+            renderTasks();
+        });
+        pendingTasksBtn.addEventListener('click', () => {
+            currentTaskFilter = 'pending';
+            setActiveFilterButton(pendingTasksBtn);
+            renderTasks();
+        });
+
+        // Add Note
+        addNoteBtn.addEventListener('click', addNote);
+        noteTitleInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addNote();
+            }
+        });
+        noteContentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { // Allow shift+enter for new line
+                e.preventDefault(); // Prevent default enter behavior (new line)
+                addNote();
+            }
+        });
+
+
+        // Search functionality
+        searchBar.addEventListener('input', () => {
+            if (currentView === 'tasks') {
+                renderTasks();
+            } else {
+                renderNotes();
+            }
+        });
+
+        // --- Initialization ---
+
+        /**
+         * Initializes the application: loads data and renders the initial view.
+         */
+        const init = () => {
+            tasks = loadData('tasks');
+            notes = loadData('notes');
+            updateCounts();
+            switchView('notes'); // Start with notes view
+            setActiveFilterButton(totalTasksBtn); // Set total tasks button as active initially
+        };
+
+        // Run initialization when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
